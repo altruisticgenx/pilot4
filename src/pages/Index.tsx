@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import ProposalsSection from "@/components/sections/ProposalsSection";
 import ContactForm from "@/components/sections/ContactForm";
 import ExperimentBoard from "@/components/sections/ExperimentBoard";
@@ -31,7 +32,7 @@ const Index = () => {
               </nav>
             </div>
             <div className="flex items-center gap-4">
-              <button className="hidden md:inline text-sm text-muted-foreground hover:text-foreground">Lab Notebook</button>
+              <Link to="/auth" className="hidden md:inline text-sm text-muted-foreground hover:text-foreground">Admin Login</Link>
               <Button onClick={() => scrollToSection("contact")}>Start a 4-Week Pilot</Button>
               <button className="md:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>{mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}</button>
             </div>
