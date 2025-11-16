@@ -2,10 +2,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { CheckCircle2, Sparkles, Target, Shield, Zap, Users, Cpu, Heart } from "lucide-react";
+import { CheckCircle2, Target, Cpu, Heart } from "lucide-react";
 import ProposalsSection from "@/components/sections/ProposalsSection";
+import ContactForm from "@/components/sections/ContactForm";
+import ExperimentBoard from "@/components/sections/ExperimentBoard";
 const Index = () => {
   return <div className="w-full min-h-screen">
       {/* Hero Section */}
@@ -55,6 +55,9 @@ const Index = () => {
 
       {/* Proposals Section */}
       <ProposalsSection />
+
+      {/* Experiment Board */}
+      <ExperimentBoard />
 
       {/* Core Values */}
       <section className="py-24 bg-gradient-to-r from-pink-50/50 to-purple-50/50 dark:from-pink-950/10 dark:to-purple-950/10">
@@ -227,55 +230,9 @@ const Index = () => {
       </section>
 
       {/* Contact */}
-      <section className="py-24 bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              Let's Build Something Impactful
-            </h2>
-            <p className="text-xl text-white/90">
-              Start with a free 30-minute scoping call
-            </p>
-          </div>
-          <Card className="border-0 shadow-2xl">
-            <CardContent className="pt-6">
-              <form className="space-y-4">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Name</label>
-                    <Input placeholder="Your name" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Email</label>
-                    <Input type="email" placeholder="your@email.com" />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">Organization</label>
-                  <Input placeholder="Your organization" />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">I'm a...</label>
-                  <select className="w-full border border-input rounded-md px-3 py-2 bg-background h-9">
-                    <option>Facilities / Sustainability Manager</option>
-                    <option>EdTech / Education Leader</option>
-                    <option>Civic / Coalition Director</option>
-                    <option>Impact Startup Founder</option>
-                    <option>Other</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">Tell us about your project</label>
-                  <Textarea placeholder="What challenge are you trying to solve?" rows={4} />
-                </div>
-                <Button className="w-full" size="lg">
-                  Schedule Free Scoping Call
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
+      <div id="contact-form">
+        <ContactForm />
+      </div>
 
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-12">
