@@ -14,6 +14,60 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_audit_log: {
+        Row: {
+          action: string
+          created_at: string | null
+          id: string
+          ip_address: unknown
+          metadata: Json | null
+          user_agent: string | null
+          user_email: string
+          user_id: string
+        }
+        Insert: {
+          action: string
+          created_at?: string | null
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          user_agent?: string | null
+          user_email: string
+          user_id: string
+        }
+        Update: {
+          action?: string
+          created_at?: string | null
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          user_agent?: string | null
+          user_email?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      allowed_email_domains: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          domain: string
+          id: string
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          domain: string
+          id?: string
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          domain?: string
+          id?: string
+        }
+        Relationships: []
+      }
       experiments: {
         Row: {
           created_at: string | null
@@ -130,6 +184,16 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      is_email_domain_allowed: { Args: { email: string }; Returns: boolean }
+      log_admin_action: {
+        Args: {
+          p_action: string
+          p_metadata?: Json
+          p_user_email: string
+          p_user_id: string
+        }
+        Returns: undefined
       }
     }
     Enums: {
