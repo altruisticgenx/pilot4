@@ -6,10 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { CheckCircle2, Sparkles, Target, Shield, Zap, Users, Cpu, Heart } from "lucide-react";
 import ProposalsSection from "@/components/sections/ProposalsSection";
-
 const Index = () => {
-  return (
-    <div className="w-full min-h-screen">
+  return <div className="w-full min-h-screen">
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 dark:from-pink-950/20 dark:via-purple-950/20 dark:to-blue-950/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 relative">
@@ -48,11 +46,9 @@ const Index = () => {
             </p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center opacity-60">
-            {["Universities", "EdTech", "Coalitions", "Startups"].map((item) => (
-              <div key={item} className="text-center">
+            {["Universities", "EdTech", "Coalitions", "Startups"].map(item => <div key={item} className="text-center">
                 <div className="text-2xl font-semibold">{item}</div>
-              </div>
-            ))}
+              </div>)}
           </div>
         </div>
       </section>
@@ -72,29 +68,23 @@ const Index = () => {
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                icon: <Target className="w-12 h-12 text-primary" />,
-                title: "Ship in Weeks, Not Months",
-                description: "4-week pilots with working demos. Iterate fast, validate early."
-              },
-              {
-                icon: <Heart className="w-12 h-12 text-secondary" />,
-                title: "Human-Centered AI",
-                description: "Ethical guardrails, transparent models, human-in-the-loop design."
-              },
-              {
-                icon: <Cpu className="w-12 h-12 text-primary" />,
-                title: "You Own Everything",
-                description: "Full code ownership, no vendor lock-in, pause anytime."
-              }
-            ].map((value, idx) => (
-              <div key={idx} className="text-center">
+            {[{
+            icon: <Target className="w-12 h-12 text-primary" />,
+            title: "Ship in Weeks, Not Months",
+            description: "4-week pilots with working demos. Iterate fast, validate early."
+          }, {
+            icon: <Heart className="w-12 h-12 text-secondary" />,
+            title: "Human-Centered AI",
+            description: "Ethical guardrails, transparent models, human-in-the-loop design."
+          }, {
+            icon: <Cpu className="w-12 h-12 text-primary" />,
+            title: "You Own Everything",
+            description: "Full code ownership, no vendor lock-in, pause anytime."
+          }].map((value, idx) => <div key={idx} className="text-center">
                 <div className="flex justify-center mb-4">{value.icon}</div>
                 <h3 className="text-2xl font-bold mb-3">{value.title}</h3>
                 <p className="text-muted-foreground text-lg">{value.description}</p>
-              </div>
-            ))}
+              </div>)}
           </div>
         </div>
       </section>
@@ -111,88 +101,54 @@ const Index = () => {
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {[
-              {
-                name: "Discovery",
-                price: "$5k",
-                period: "one-time",
-                description: "Perfect for validating your idea",
-                features: [
-                  "1-week scoping sprint",
-                  "Technical feasibility report",
-                  "Prototype roadmap",
-                  "Data audit & recommendations"
-                ],
-                cta: "Start Discovery",
-                highlight: false
-              },
-              {
-                name: "4-Week Pilot",
-                price: "$20k",
-                period: "4 weeks",
-                description: "Ship a working demo fast",
-                features: [
-                  "Working prototype",
-                  "Weekly check-ins",
-                  "Full code ownership",
-                  "Ethical review included",
-                  "2 weeks post-pilot support"
-                ],
-                cta: "Launch Pilot",
-                highlight: true
-              },
-              {
-                name: "Ongoing R&D",
-                price: "Custom",
-                period: "flexible",
-                description: "For longer-term partnerships",
-                features: [
-                  "Dedicated team access",
-                  "Multi-phase projects",
-                  "Grant writing support",
-                  "Research publication partnership",
-                  "Flexible pause/resume"
-                ],
-                cta: "Let's Talk",
-                highlight: false
-              }
-            ].map((plan, idx) => (
-              <Card 
-                key={idx} 
-                className={`relative ${plan.highlight ? 'border-primary border-4 shadow-2xl scale-105' : 'border-2 hover:border-primary/30'} transition-all`}
-              >
-                {plan.highlight && (
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+            {[{
+            name: "Discovery",
+            price: "$5k",
+            period: "one-time",
+            description: "Perfect for validating your idea",
+            features: ["1-week scoping sprint", "Technical feasibility report", "Prototype roadmap", "Data audit & recommendations"],
+            cta: "Start Discovery",
+            highlight: false
+          }, {
+            name: "4-Week Pilot",
+            price: "$20k",
+            period: "4 weeks",
+            description: "Ship a working demo fast",
+            features: ["Working prototype", "Weekly check-ins", "Full code ownership", "Ethical review included", "2 weeks post-pilot support"],
+            cta: "Launch Pilot",
+            highlight: true
+          }, {
+            name: "Ongoing R&D",
+            price: "Custom",
+            period: "flexible",
+            description: "For longer-term partnerships",
+            features: ["Dedicated team access", "Multi-phase projects", "Grant writing support", "Research publication partnership", "Flexible pause/resume"],
+            cta: "Let's Talk",
+            highlight: false
+          }].map((plan, idx) => <Card key={idx} className={`relative ${plan.highlight ? 'border-primary border-4 shadow-2xl scale-105' : 'border-2 hover:border-primary/30'} transition-all`}>
+                {plan.highlight && <div className="absolute -top-4 left-1/2 -translate-x-1/2">
                     <Badge className="bg-primary text-primary-foreground px-4 py-1">Most Popular</Badge>
-                  </div>
-                )}
+                  </div>}
                 <CardHeader>
                   <CardTitle className="text-2xl">{plan.name}</CardTitle>
                   <div className="mt-4">
-                    <span className="text-4xl font-bold">{plan.price}</span>
+                    
                     <span className="text-muted-foreground ml-2">/ {plan.period}</span>
                   </div>
                   <CardDescription className="text-base mt-2">{plan.description}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <ul className="space-y-3 mb-6">
-                    {plan.features.map((feature, i) => (
-                      <li key={i} className="flex items-start gap-2">
+                    {plan.features.map((feature, i) => <li key={i} className="flex items-start gap-2">
                         <CheckCircle2 className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
                         <span className="text-muted-foreground">{feature}</span>
-                      </li>
-                    ))}
+                      </li>)}
                   </ul>
-                  <Button 
-                    className="w-full"
-                    size="lg"
-                    variant={plan.highlight ? "default" : "outline"}
-                  >
+                  <Button className="w-full" size="lg" variant={plan.highlight ? "default" : "outline"}>
                     {plan.cta}
                   </Button>
                 </CardContent>
-              </Card>
-            ))}
+              </Card>)}
           </div>
         </div>
       </section>
@@ -206,33 +162,27 @@ const Index = () => {
             </h2>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                quote: "They turned 5 years of energy data into a grant-winning narrative in just 4 weeks. Game-changer for campus sustainability.",
-                author: "Facility Fran",
-                role: "University Facilities Manager"
-              },
-              {
-                quote: "Finally, a matching tool our teachers actually want to use. Privacy-first, human review built-in, zero compliance headaches.",
-                author: "Teacher Tara",
-                role: "EdTech Program Lead"
-              },
-              {
-                quote: "Transparent AI with clear guardrails. They helped us pilot civic sensing without compromising our community values.",
-                author: "Civic Cory",
-                role: "Coalition Director"
-              }
-            ].map((testimonial, idx) => (
-              <Card key={idx} className="border-2 hover:border-primary/30 transition-all">
+            {[{
+            quote: "They turned 5 years of energy data into a grant-winning narrative in just 4 weeks. Game-changer for campus sustainability.",
+            author: "Facility Fran",
+            role: "University Facilities Manager"
+          }, {
+            quote: "Finally, a matching tool our teachers actually want to use. Privacy-first, human review built-in, zero compliance headaches.",
+            author: "Teacher Tara",
+            role: "EdTech Program Lead"
+          }, {
+            quote: "Transparent AI with clear guardrails. They helped us pilot civic sensing without compromising our community values.",
+            author: "Civic Cory",
+            role: "Coalition Director"
+          }].map((testimonial, idx) => <Card key={idx} className="border-2 hover:border-primary/30 transition-all">
                 <CardContent className="pt-6">
                   <p className="text-lg text-muted-foreground mb-4 italic">"{testimonial.quote}"</p>
                   <div>
-                    <p className="font-semibold">{testimonial.author}</p>
+                    
                     <p className="text-sm text-muted-foreground">{testimonial.role}</p>
                   </div>
                 </CardContent>
-              </Card>
-            ))}
+              </Card>)}
           </div>
         </div>
       </section>
@@ -246,41 +196,32 @@ const Index = () => {
             </h2>
           </div>
           <Accordion type="single" collapsible className="space-y-4">
-            {[
-              {
-                q: "Do we really own the code?",
-                a: "Yes! Full IP ownership, all code delivered in open repos, no licensing fees. You can take it in-house, hire another team, or pause anytime."
-              },
-              {
-                q: "What if we need to pause?",
-                a: "You can pause week-by-week after the initial pilot. No penalties, no long-term contracts. Resume when you're ready."
-              },
-              {
-                q: "How do you ensure ethical AI?",
-                a: "Every pilot includes: transparent model documentation, bias audits, human-in-the-loop checkpoints, and explicit guardrails co-designed with your team."
-              },
-              {
-                q: "Can you help with grant writing?",
-                a: "Absolutely. We've supported teams in securing NSF, DOE, and foundation grants. We can provide technical narratives, preliminary data, and feasibility studies."
-              },
-              {
-                q: "What if we have regulatory constraints?",
-                a: "We specialize in FERPA, HIPAA-adjacent, and civic data contexts. We'll work within your compliance framework from day one."
-              },
-              {
-                q: "How fast can we start?",
-                a: "Discovery sprints can start within 1-2 weeks. Full pilots typically kick off within 3-4 weeks of first contact."
-              }
-            ].map((faq, idx) => (
-              <AccordionItem key={idx} value={`item-${idx}`} className="border-2 rounded-lg px-6">
+            {[{
+            q: "Do we really own the code?",
+            a: "Yes! Full IP ownership, all code delivered in open repos, no licensing fees. You can take it in-house, hire another team, or pause anytime."
+          }, {
+            q: "What if we need to pause?",
+            a: "You can pause week-by-week after the initial pilot. No penalties, no long-term contracts. Resume when you're ready."
+          }, {
+            q: "How do you ensure ethical AI?",
+            a: "Every pilot includes: transparent model documentation, bias audits, human-in-the-loop checkpoints, and explicit guardrails co-designed with your team."
+          }, {
+            q: "Can you help with grant writing?",
+            a: "Absolutely. We've supported teams in securing NSF, DOE, and foundation grants. We can provide technical narratives, preliminary data, and feasibility studies."
+          }, {
+            q: "What if we have regulatory constraints?",
+            a: "We specialize in FERPA, HIPAA-adjacent, and civic data contexts. We'll work within your compliance framework from day one."
+          }, {
+            q: "How fast can we start?",
+            a: "Discovery sprints can start within 1-2 weeks. Full pilots typically kick off within 3-4 weeks of first contact."
+          }].map((faq, idx) => <AccordionItem key={idx} value={`item-${idx}`} className="border-2 rounded-lg px-6">
                 <AccordionTrigger className="text-lg font-semibold hover:text-primary">
                   {faq.q}
                 </AccordionTrigger>
                 <AccordionContent className="text-muted-foreground text-base">
                   {faq.a}
                 </AccordionContent>
-              </AccordionItem>
-            ))}
+              </AccordionItem>)}
           </Accordion>
         </div>
       </section>
@@ -341,9 +282,7 @@ const Index = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
-              <h3 className="text-2xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent mb-4">
-                Impact AI Lab
-              </h3>
+              <h3 className="text-2xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent mb-4">​altruisticxai</h3>
               <p className="text-gray-400">
                 Ethical AI pilots for education, energy, and civic impact.
               </p>
@@ -369,7 +308,7 @@ const Index = () => {
             <div>
               <h4 className="font-semibold mb-4">Contact</h4>
               <ul className="space-y-2 text-gray-400">
-                <li>hello@impactailab.com</li>
+                <li>​altruisticxai@gmail.com</li>
                 <li>Schedule a call</li>
                 <li>Case studies</li>
               </ul>
@@ -380,8 +319,6 @@ const Index = () => {
           </div>
         </div>
       </footer>
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
