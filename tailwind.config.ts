@@ -9,10 +9,14 @@ export default {
       center: true,
       padding: "2rem",
       screens: {
-        "2xl": "1400px",
+        "2xl": "1200px",
       },
     },
     extend: {
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        mono: ['JetBrains Mono', 'monospace'],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -57,6 +61,17 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        success: {
+          DEFAULT: "hsl(var(--success))",
+          foreground: "hsl(var(--success-foreground))",
+        },
+        "ink-900": "hsl(var(--ink-900))",
+        "charcoal-800": "hsl(var(--charcoal-800))",
+        "ethics-green": "hsl(var(--ethics-green))",
+        "climate-blue": "hsl(var(--climate-blue))",
+        "sand-100": "hsl(var(--sand-100))",
+        "accent-warm": "hsl(var(--accent-warm))",
+        "muted-400": "hsl(var(--muted-400))",
       },
       borderRadius: {
         lg: "var(--radius)",
