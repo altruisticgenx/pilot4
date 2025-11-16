@@ -206,7 +206,7 @@ export default function ExperimentBoard() {
                             .map(([key, value]) => (
                               <div key={key} className="bg-muted/50 rounded p-2">
                                 <div className="text-xs text-muted-foreground capitalize">{key.replace(/_/g, " ")}</div>
-                                <div className="font-semibold text-xs">{String(value)}</div>
+                                <div className="font-semibold text-xs">{value != null ? String(value) : 'N/A'}</div>
                               </div>
                             ))}
                         </div>
