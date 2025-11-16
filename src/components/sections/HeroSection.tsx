@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Zap } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { Zap } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 const liveExperiments = [
   {
@@ -30,6 +32,8 @@ const statusConfig = {
 };
 
 export const HeroSection = () => {
+  const prefersReducedMotion = usePrefersReducedMotion();
+  
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     element?.scrollIntoView({ behavior: "smooth" });
@@ -54,9 +58,10 @@ export const HeroSection = () => {
               size="lg" 
               className="text-base group"
               onClick={() => scrollToSection("contact")}
+              aria-label="Start a 4-week pilot inquiry"
             >
               Start a 4-Week Pilot
-              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className={`ml-2 h-4 w-4 ${!prefersReducedMotion && 'group-hover:translate-x-1 transition-transform'}`} />
             </Button>
             <Button 
               size="lg" 
