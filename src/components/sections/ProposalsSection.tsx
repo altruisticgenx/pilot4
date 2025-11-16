@@ -1,7 +1,19 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { proposals } from "@/lib/data/proposals";
+import { usePrefill } from "@/contexts/PrefillContext";
 
 export default function ProposalsSection() {
+  const { setPrefill } = usePrefill();
+
+  const handleUseTemplate = (proposal: typeof proposals[0]) => {
+    setPrefill({
+      project_description: `${proposal.summary}\n\nOutcome: ${proposal.outcome}`,
+      role: proposal.audience.includes("Director") ? "Program Director" : 
+            proposal.audience.includes("Manager") ? "Program Manager" : "Other",
+    });
+  };
+
   return (
     <section className="py-24 px-4">
       <div className="max-w-7xl mx-auto">
@@ -36,11 +48,18 @@ export default function ProposalsSection() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground mb-4">{proposal.summary}</p>
-                  <div className="p-4 bg-accent rounded-lg border border-primary/20">
+                  <div className="p-4 bg-accent rounded-lg border border-primary/20 mb-4">
                     <p className="text-sm font-medium text-accent-foreground">
                       Outcome: {proposal.outcome}
                     </p>
                   </div>
+                  <Button 
+                    onClick={() => handleUseTemplate(proposal)}
+                    className="w-full"
+                    aria-label={`Use ${proposal.name} template to start a pilot inquiry`}
+                  >
+                    Use This Template
+                  </Button>
                 </CardContent>
               </Card>
             );
