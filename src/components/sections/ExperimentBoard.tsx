@@ -2,9 +2,8 @@ import { useState, useMemo } from "react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Search, Filter, ExternalLink, Github } from "lucide-react";
+import { Search, ExternalLink, Github } from "lucide-react";
 import { useExperiments } from "@/hooks/useExperiments";
 import ExperimentDetailModal from "./ExperimentDetailModal";
 import { Database } from "@/integrations/supabase/types";
@@ -12,14 +11,14 @@ import { Database } from "@/integrations/supabase/types";
 type Experiment = Database["public"]["Tables"]["experiments"]["Row"];
 
 const statusColors = {
-  now_shipping: "bg-green-500/10 text-green-700 dark:text-green-400 border-green-500/20",
-  seeking_partners: "bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-500/20",
-  shelved: "bg-gray-500/10 text-gray-700 dark:text-gray-400 border-gray-500/20",
+  now_shipping: "bg-ethics-green/10 text-ethics-green border-ethics-green/20",
+  seeking_partners: "bg-climate-blue/10 text-climate-blue border-climate-blue/20",
+  shelved: "bg-muted/10 text-muted-foreground border-muted/20",
 };
 
 const statusLabels = {
   now_shipping: "Now Shipping",
-  seeking_partners: "Seeking Partners",
+  seeking_partners: "Looking for Partners",
   shelved: "Shelved",
 };
 
@@ -32,34 +31,24 @@ const domainOptions = [
   { value: "data_infrastructure", label: "Data Infrastructure" },
 ];
 
-const statusOptions = [
-  { value: "all", label: "All Status" },
-  { value: "now_shipping", label: "Now Shipping" },
-  { value: "seeking_partners", label: "Seeking Partners" },
-  { value: "shelved", label: "Shelved" },
-];
-
 export default function ExperimentBoard() {
   const [domain, setDomain] = useState("all");
-  const [status, setStatus] = useState("all");
   const [search, setSearch] = useState("");
   const [selectedExperiment, setSelectedExperiment] = useState<Experiment | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
 
   const { data: experiments, isLoading } = useExperiments({
     domain: domain !== "all" ? domain : undefined,
-    status: status !== "all" ? status : undefined,
     search: search || undefined,
   });
 
-  // Collect all unique tags for display
-  const allTags = useMemo(() => {
-    if (!experiments) return [];
-    const tags = new Set<string>();
-    experiments.forEach((exp) => {
-      exp.tags?.forEach((tag) => tags.add(tag));
-    });
-    return Array.from(tags).sort();
+  const experimentsByStatus = useMemo(() => {
+    if (!experiments) return { now_shipping: [], seeking_partners: [], shelved: [] };
+    return {
+      now_shipping: experiments.filter(exp => exp.status === "now_shipping"),
+      seeking_partners: experiments.filter(exp => exp.status === "seeking_partners"),
+      shelved: experiments.filter(exp => exp.status === "shelved"),
+    };
   }, [experiments]);
 
   const handleViewDetails = (experiment: Experiment) => {
@@ -67,184 +56,59 @@ export default function ExperimentBoard() {
     setModalOpen(true);
   };
 
+  const renderExperimentCard = (experiment: Experiment) => (
+    <div key={experiment.id} className="bg-background rounded-lg p-4 shadow-sm border border-border hover:shadow-md transition-shadow cursor-pointer" onClick={() => handleViewDetails(experiment)}>
+      <div className="flex justify-between items-start mb-2">
+        <div className="text-sm font-semibold flex-1 pr-2">{experiment.title}</div>
+        {experiment.metrics && typeof experiment.metrics === 'object' && 'uptime' in experiment.metrics && (
+          <div className="text-xs font-mono text-muted-foreground whitespace-nowrap">Uptime {experiment.metrics.uptime}</div>
+        )}
+      </div>
+      <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{experiment.hypothesis}</p>
+      <div className="flex items-center gap-2 flex-wrap">
+        <Badge variant="secondary" className="text-xs">{experiment.domain}</Badge>
+        {experiment.tags?.slice(0, 2).map((tag, idx) => <Badge key={idx} variant="outline" className="text-xs">{tag}</Badge>)}
+      </div>
+      {(experiment.demo_url || experiment.repo_url) && (
+        <div className="flex gap-2 mt-3">
+          {experiment.demo_url && <Button size="sm" variant="ghost" className="h-7 px-2 text-xs" onClick={(e) => { e.stopPropagation(); window.open(experiment.demo_url!, "_blank"); }}><ExternalLink className="h-3 w-3 mr-1" />Demo</Button>}
+          {experiment.repo_url && <Button size="sm" variant="ghost" className="h-7 px-2 text-xs" onClick={(e) => { e.stopPropagation(); window.open(experiment.repo_url!, "_blank"); }}><Github className="h-3 w-3 mr-1" />Repo</Button>}
+        </div>
+      )}
+    </div>
+  );
+
+  const renderColumn = (title: string, status: keyof typeof experimentsByStatus, experiments: Experiment[]) => (
+    <div className="min-w-[320px] shrink-0">
+      <h4 className="font-semibold mb-4 flex items-center gap-2">{title}<Badge variant="outline" className={statusColors[status]}>{experiments.length}</Badge></h4>
+      <div className="space-y-4">
+        {isLoading ? Array.from({ length: 2 }).map((_, idx) => <Skeleton key={idx} className="h-32 rounded-lg" />) : experiments.length > 0 ? experiments.map(renderExperimentCard) : <div className="text-sm text-muted-foreground italic">No experiments</div>}
+      </div>
+    </div>
+  );
+
   return (
     <>
-      <section className="py-24 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <Badge className="mb-4 bg-primary text-primary-foreground">Live Experiment Board</Badge>
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              What We're Building
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Browse our live experiments, shipped projects, and open partnership opportunities. 
-              Everything here is real—see what's shipping, what's seeking partners, and what we learned.
-            </p>
+      <section id="experiments" className="container mx-auto max-w-6xl px-6 py-24 bg-sand">
+        <div className="mb-12">
+          <h2 className="text-3xl font-semibold mb-6">Live Experiment Board</h2>
+          <div className="flex flex-col md:flex-row gap-4 mb-6">
+            <div className="flex-1 relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Input placeholder="Search experiments..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-10" />
+            </div>
+            <select value={domain} onChange={(e) => setDomain(e.target.value)} className="border border-input rounded-md px-3 py-2 bg-background h-10 min-w-[200px]">
+              {domainOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
+            </select>
           </div>
-
-          {/* Filters */}
-          <div className="mb-8 space-y-4">
-            <div className="flex flex-col md:flex-row gap-4">
-              <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <Input
-                  placeholder="Search experiments..."
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  className="pl-10"
-                />
-              </div>
-              <select
-                value={domain}
-                onChange={(e) => setDomain(e.target.value)}
-                className="border border-input rounded-md px-3 py-2 bg-background h-10 min-w-[200px]"
-              >
-                {domainOptions.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
-              <select
-                value={status}
-                onChange={(e) => setStatus(e.target.value)}
-                className="border border-input rounded-md px-3 py-2 bg-background h-10 min-w-[200px]"
-              >
-                {statusOptions.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Tag display (info only) */}
-            {allTags.length > 0 && (
-              <div className="flex flex-wrap gap-2 items-center">
-                <span className="text-sm text-muted-foreground">Tech tags across experiments:</span>
-                {allTags.slice(0, 8).map((tag) => (
-                  <Badge key={tag} variant="secondary" className="text-xs">
-                    {tag}
-                  </Badge>
-                ))}
-                {allTags.length > 8 && (
-                  <span className="text-xs text-muted-foreground">+{allTags.length - 8} more</span>
-                )}
-              </div>
-            )}
-          </div>
-
-          {/* Results */}
-          {isLoading ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[1, 2, 3, 4, 5, 6].map((i) => (
-                <Card key={i}>
-                  <CardHeader>
-                    <Skeleton className="h-6 w-3/4 mb-2" />
-                    <Skeleton className="h-4 w-full" />
-                  </CardHeader>
-                  <CardContent>
-                    <Skeleton className="h-20 w-full" />
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          ) : experiments && experiments.length > 0 ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {experiments.map((exp) => {
-                const metrics = exp.metrics as Record<string, any> || {};
-                return (
-                  <Card
-                    key={exp.id}
-                    className="border-2 hover:border-primary/30 transition-all hover:shadow-lg group"
-                  >
-                    <CardHeader>
-                      <div className="flex flex-wrap gap-2 mb-2">
-                        <Badge className={statusColors[exp.status as keyof typeof statusColors]}>
-                          {statusLabels[exp.status as keyof typeof statusLabels]}
-                        </Badge>
-                        <Badge variant="outline" className="capitalize">
-                          {exp.domain.replace(/_/g, " ")}
-                        </Badge>
-                      </div>
-                      <CardTitle className="text-xl">{exp.title}</CardTitle>
-                      <CardDescription className="line-clamp-2">
-                        {exp.hypothesis}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      {/* Tags */}
-                      {exp.tags && exp.tags.length > 0 && (
-                        <div className="flex flex-wrap gap-1">
-                          {exp.tags.slice(0, 4).map((tag) => (
-                            <Badge key={tag} variant="secondary" className="text-xs">
-                              {tag}
-                            </Badge>
-                          ))}
-                        </div>
-                      )}
-
-                      {/* Metrics preview */}
-                      {Object.keys(metrics).length > 0 && (
-                        <div className="grid grid-cols-2 gap-2 text-sm">
-                          {Object.entries(metrics).slice(0, 2).map(([key, value]) => (
-                            <div key={key} className="bg-muted/50 rounded p-2">
-                              <div className="text-xs text-muted-foreground capitalize">
-                                {key.replace(/_/g, " ")}
-                              </div>
-                              <div className="font-semibold text-xs">{String(value)}</div>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-
-                      {/* Actions */}
-                      <div className="flex gap-2 pt-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="flex-1"
-                          onClick={() => handleViewDetails(exp)}
-                        >
-                          View Details
-                        </Button>
-                        {exp.demo_url && (
-                          <Button variant="ghost" size="sm" asChild>
-                            <a href={exp.demo_url} target="_blank" rel="noopener noreferrer">
-                              <ExternalLink className="w-4 h-4" />
-                            </a>
-                          </Button>
-                        )}
-                        {exp.repo_url && (
-                          <Button variant="ghost" size="sm" asChild>
-                            <a href={exp.repo_url} target="_blank" rel="noopener noreferrer">
-                              <Github className="w-4 h-4" />
-                            </a>
-                          </Button>
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                );
-              })}
-            </div>
-          ) : (
-            <div className="text-center py-12">
-              <Filter className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
-              <h3 className="text-xl font-semibold mb-2">No experiments found</h3>
-              <p className="text-muted-foreground">
-                Try adjusting your filters or search query
-              </p>
-            </div>
-          )}
+        </div>
+        <div className="flex gap-6 overflow-x-auto pb-6">
+          {renderColumn("Now Shipping", "now_shipping", experimentsByStatus.now_shipping)}
+          {renderColumn("Looking for Partners", "seeking_partners", experimentsByStatus.seeking_partners)}
+          {renderColumn("Shelved", "shelved", experimentsByStatus.shelved)}
         </div>
       </section>
-
-      <ExperimentDetailModal
-        experiment={selectedExperiment}
-        open={modalOpen}
-        onOpenChange={setModalOpen}
-      />
+      <ExperimentDetailModal experiment={selectedExperiment} open={modalOpen} onOpenChange={setModalOpen} />
     </>
   );
 }
