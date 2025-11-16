@@ -14,7 +14,90 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      experiments: {
+        Row: {
+          created_at: string | null
+          demo_url: string | null
+          domain: string
+          ethics_note: string | null
+          hypothesis: string
+          id: string
+          last_updated: string | null
+          metrics: Json | null
+          repo_url: string | null
+          status: string
+          tags: string[] | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          demo_url?: string | null
+          domain: string
+          ethics_note?: string | null
+          hypothesis: string
+          id?: string
+          last_updated?: string | null
+          metrics?: Json | null
+          repo_url?: string | null
+          status: string
+          tags?: string[] | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          demo_url?: string | null
+          domain?: string
+          ethics_note?: string | null
+          hypothesis?: string
+          id?: string
+          last_updated?: string | null
+          metrics?: Json | null
+          repo_url?: string | null
+          status?: string
+          tags?: string[] | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      pilot_inquiries: {
+        Row: {
+          created_at: string | null
+          email: string
+          id: string
+          name: string
+          organization: string | null
+          project_description: string
+          role: string
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          id?: string
+          name: string
+          organization?: string | null
+          project_description: string
+          role: string
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          id?: string
+          name?: string
+          organization?: string | null
+          project_description?: string
+          role?: string
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
