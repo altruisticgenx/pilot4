@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { z } from "zod";
+import { EmailDomainGuard } from "@/components/sections/EmailDomainGuard";
 
 const authSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -19,6 +20,7 @@ export default function Auth() {
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isEmailValid, setIsEmailValid] = useState(true);
 
   useEffect(() => {
     // Check if user is already logged in
@@ -40,6 +42,11 @@ export default function Auth() {
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!isEmailValid) {
+      toast.error("Please use an authorized email domain");
+      return;
+    }
     
     try {
       const validated = authSchema.parse({ email, password });
@@ -167,10 +174,16 @@ export default function Auth() {
                   <Input
                     id="signup-email"
                     type="email"
-                    placeholder="admin@example.com"
+                    placeholder="admin@example.edu"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
+                    autoComplete="email"
+                    aria-label="Email address"
+                  />
+                  <EmailDomainGuard 
+                    email={email} 
+                    onValidationResult={setIsEmailValid} 
                   />
                 </div>
                 <div className="space-y-2">
@@ -185,8 +198,8 @@ export default function Auth() {
                 </div>
                 <Button 
                   type="submit" 
-                  className="w-full"
-                  disabled={isLoading}
+                  className="w-full" 
+                  disabled={isLoading || !isEmailValid}
                 >
                   {isLoading ? "Creating account..." : "Sign Up"}
                 </Button>

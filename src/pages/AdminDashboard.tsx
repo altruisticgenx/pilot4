@@ -76,6 +76,13 @@ export default function AdminDashboard() {
         toast.error("Access denied. Admin privileges required.");
         navigate("/");
       } else {
+        // Log admin login
+        await supabase.rpc('log_admin_action', {
+          p_user_id: userId,
+          p_user_email: user?.email || '',
+          p_action: 'admin_login',
+          p_metadata: {},
+        });
         fetchInquiries();
       }
     } catch (error) {
@@ -103,6 +110,16 @@ export default function AdminDashboard() {
   };
 
   const handleSignOut = async () => {
+    // Log admin logout
+    if (user) {
+      await supabase.rpc('log_admin_action', {
+        p_user_id: user.id,
+        p_user_email: user.email || '',
+        p_action: 'admin_logout',
+        p_metadata: {},
+      });
+    }
+    
     await supabase.auth.signOut();
     toast.success("Signed out successfully");
     navigate("/");
