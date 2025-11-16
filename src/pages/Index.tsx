@@ -20,38 +20,58 @@ const Index = () => {
 
   return (
     <div className="w-full min-h-screen bg-sand">
-      <header className="bg-background shadow-sm sticky top-0 z-50">
+      {/* Skip to main content link for accessibility */}
+      <a 
+        href="#main-content" 
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-background focus:px-4 focus:py-2 focus:rounded-md focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-primary"
+      >
+        Skip to main content
+      </a>
+      
+      <header className="bg-background shadow-sm sticky top-0 z-50" role="banner">
         <div className="container mx-auto max-w-6xl px-6">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-8">
-              <div className="text-xl font-bold text-foreground">AltruisticX<span className="text-climate-blue">AI</span></div>
-              <nav className="hidden md:flex gap-6 text-sm text-muted-foreground">
-                <button onClick={() => scrollToSection("experiments")} className="hover:text-foreground transition-colors">Experiments</button>
-                <button onClick={() => scrollToSection("process")} className="hover:text-foreground transition-colors">Process</button>
-                <button onClick={() => scrollToSection("testimonials")} className="hover:text-foreground transition-colors">Case Studies</button>
+              <div className="text-xl font-bold text-foreground">
+                AltruisticX<span className="text-climate-blue">AI</span>
+              </div>
+              <nav className="hidden md:flex gap-6 text-sm text-muted-foreground" role="navigation" aria-label="Main navigation">
+                <button onClick={() => scrollToSection("experiments")} className="hover:text-foreground transition-colors" aria-label="Navigate to experiments section">Experiments</button>
+                <button onClick={() => scrollToSection("process")} className="hover:text-foreground transition-colors" aria-label="Navigate to process section">Process</button>
+                <button onClick={() => scrollToSection("testimonials")} className="hover:text-foreground transition-colors" aria-label="Navigate to case studies section">Case Studies</button>
               </nav>
             </div>
             <div className="flex items-center gap-4">
               <Link to="/auth" className="hidden md:inline text-sm text-muted-foreground hover:text-foreground">Admin Login</Link>
-              <Button onClick={() => scrollToSection("contact")}>Start a 4-Week Pilot</Button>
-              <button className="md:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>{mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}</button>
+              <Button onClick={() => scrollToSection("contact")} aria-label="Start a 4-week pilot inquiry">Start a 4-Week Pilot</Button>
+              <button 
+                className="md:hidden" 
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                aria-label={mobileMenuOpen ? "Close mobile menu" : "Open mobile menu"}
+                aria-expanded={mobileMenuOpen}
+                aria-controls="mobile-menu"
+              >
+                {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              </button>
             </div>
           </div>
           {mobileMenuOpen && (
-            <div className="md:hidden py-4 border-t">
-              <nav className="flex flex-col gap-4">
-                <button onClick={() => scrollToSection("experiments")} className="text-left text-muted-foreground hover:text-foreground">Experiments</button>
-                <button onClick={() => scrollToSection("process")} className="text-left text-muted-foreground hover:text-foreground">Process</button>
-                <button onClick={() => scrollToSection("testimonials")} className="text-left text-muted-foreground hover:text-foreground">Case Studies</button>
+            <div id="mobile-menu" className="md:hidden py-4 border-t">
+              <nav className="flex flex-col gap-4" role="navigation" aria-label="Mobile navigation">
+                <button onClick={() => scrollToSection("experiments")} className="text-left text-muted-foreground hover:text-foreground" aria-label="Navigate to experiments section">Experiments</button>
+                <button onClick={() => scrollToSection("process")} className="text-left text-muted-foreground hover:text-foreground" aria-label="Navigate to process section">Process</button>
+                <button onClick={() => scrollToSection("testimonials")} className="text-left text-muted-foreground hover:text-foreground" aria-label="Navigate to case studies section">Case Studies</button>
               </nav>
             </div>
           )}
         </div>
       </header>
+      
+      <main id="main-content" role="main">
       <HeroSection />
       <ExperimentBoard />
-      <section id="process" className="container mx-auto max-w-6xl px-6 py-24">
-        <h2 className="text-3xl font-semibold mb-12 text-center">4-Week Pilot — Week by Week</h2>
+        <section id="process" className="container mx-auto max-w-6xl px-6 py-24" aria-labelledby="process-heading">
+        <h2 id="process-heading" className="text-3xl font-semibold mb-12 text-center">4-Week Pilot — Week by Week</h2>
         <div className="grid md:grid-cols-3 gap-6">
           <Card><CardHeader><CardTitle className="font-mono text-sm">Week 1-2 — Foundation</CardTitle></CardHeader><CardContent><ul className="text-sm text-muted-foreground list-disc pl-5 space-y-1"><li>Repo + CI/CD</li><li>DB & API skeleton</li><li>First MVP feature</li></ul></CardContent></Card>
           <Card><CardHeader><CardTitle className="font-mono text-sm">Week 3 — Polish</CardTitle></CardHeader><CardContent><ul className="text-sm text-muted-foreground list-disc pl-5 space-y-1"><li>Frontend integration</li><li>AI model integration</li><li>Documentation</li></ul></CardContent></Card>
@@ -79,7 +99,9 @@ const Index = () => {
         </div>
       </section>
       <section id="contact"><ContactForm /></section>
-      <footer className="bg-background border-t">
+      </main>
+      
+      <footer className="bg-background border-t" role="contentinfo">
         <div className="container mx-auto max-w-6xl px-6 py-12">
           <div className="grid md:grid-cols-3 gap-8">
             <div><div className="font-bold text-lg mb-2">AltruisticX AI</div><p className="text-sm text-muted-foreground max-w-sm">Ethical, rapid AI pilots for energy, education, and civic tech. We ship working prototypes fast — and you own the code.</p></div>
