@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils';
 interface Message {
   role: 'user' | 'assistant';
   content: string;
+  timestamp: Date;
 }
 
 export const AIChat = () => {
@@ -24,7 +25,7 @@ export const AIChat = () => {
   }, [messages]);
 
   const streamChat = async (userMessage: string) => {
-    const newMessages = [...messages, { role: 'user' as const, content: userMessage }];
+    const newMessages = [...messages, { role: 'user' as const, content: userMessage, timestamp: new Date() }];
     setMessages(newMessages);
     setIsLoading(true);
 
@@ -71,7 +72,7 @@ export const AIChat = () => {
             const content = parsed.choices?.[0]?.delta?.content;
             if (content) {
               assistantMessage += content;
-              setMessages([...newMessages, { role: 'assistant', content: assistantMessage }]);
+              setMessages([...newMessages, { role: 'assistant', content: assistantMessage, timestamp: new Date() }]);
             }
           } catch {
             // Ignore parse errors for partial data
@@ -82,7 +83,7 @@ export const AIChat = () => {
       console.error('Chat error:', error);
       setMessages([
         ...newMessages,
-        { role: 'assistant', content: 'Sorry, I encountered an error. Please try again.' },
+        { role: 'assistant', content: 'Sorry, I encountered an error. Please try again.', timestamp: new Date() },
       ]);
     } finally {
       setIsLoading(false);
@@ -134,8 +135,8 @@ export const AIChat = () => {
                 <div
                   key={idx}
                   className={cn(
-                    'flex',
-                    msg.role === 'user' ? 'justify-end' : 'justify-start'
+                    'flex flex-col gap-1',
+                    msg.role === 'user' ? 'items-end' : 'items-start'
                   )}
                 >
                   <div
@@ -148,12 +149,22 @@ export const AIChat = () => {
                   >
                     <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
                   </div>
+                  <span className="text-xs text-muted-foreground px-1">
+                    {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </span>
                 </div>
               ))}
               {isLoading && (
                 <div className="flex justify-start">
                   <div className="bg-muted text-foreground rounded-lg px-4 py-2">
-                    <p className="text-sm">Thinking...</p>
+                    <div className="flex items-center gap-2">
+                      <div className="flex gap-1">
+                        <span className="w-2 h-2 bg-muted-foreground/60 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
+                        <span className="w-2 h-2 bg-muted-foreground/60 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
+                        <span className="w-2 h-2 bg-muted-foreground/60 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
+                      </div>
+                      <span className="text-sm">AI is typing...</span>
+                    </div>
                   </div>
                 </div>
               )}
