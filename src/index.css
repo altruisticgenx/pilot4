@@ -8,7 +8,7 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* AltruisticX AI Design System */
+    /* AltruisticX AI Design System - Updated Palette */
     --background: 30 33% 94%;  /* sand-100 #F4F0EC */
     --foreground: 216 29% 7%;  /* ink-900 #0C0F14 */
     --card: 0 0% 100%;
@@ -17,10 +17,11 @@ All colors MUST be HSL.
     --popover-foreground: 216 29% 7%;
     --primary: 210 100% 67%;  /* climate-blue #58A4FF */
     --primary-foreground: 0 0% 100%;
-    --secondary: 0 0% 100%;
+    --primary-glow: 210 100% 75%;
+    --secondary: 30 10% 92%;
     --secondary-foreground: 216 29% 7%;
     --muted: 200 8% 64%;  /* muted-400 #9AA3A8 */
-    --muted-foreground: 200 8% 64%;
+    --muted-foreground: 200 8% 50%;
     --accent: 43 100% 67%;  /* accent-warm #FFC857 */
     --accent-foreground: 216 29% 7%;
     --success: 165 70% 65%;  /* ethics-green #6CE0C3 */
@@ -31,6 +32,17 @@ All colors MUST be HSL.
     --input: 30 10% 85%;
     --ring: 210 100% 67%;
     --radius: 0.75rem;
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(210 100% 67%), hsl(210 100% 75%));
+    --gradient-subtle: linear-gradient(180deg, hsl(30 33% 96%), hsl(30 33% 94%));
+    
+    /* Shadows */
+    --shadow-elegant: 0 10px 30px -10px hsl(210 100% 67% / 0.3);
+    --shadow-glow: 0 0 40px hsl(210 100% 75% / 0.4);
+    
+    /* Transitions */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     
     /* Custom tokens */
     --ink-900: 216 29% 7%;
@@ -90,6 +102,15 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
+    font-feature-settings: "kern" 1, "liga" 1;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-sans tracking-tight;
+  }
+  
+  code, pre {
+    @apply font-mono;
   }
 }
