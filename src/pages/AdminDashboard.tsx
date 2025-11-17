@@ -5,8 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import type { Session, User } from "@supabase/supabase-js";
+import { MFASetup } from "@/components/sections/MFASetup";
 
 interface PilotInquiry {
   id: string;
@@ -145,7 +147,7 @@ export default function AdminDashboard() {
         <div className="container mx-auto max-w-7xl px-6 py-4 flex justify-between items-center">
           <div>
             <h1 className="text-2xl font-bold text-charcoal-800">Admin Dashboard</h1>
-            <p className="text-sm text-muted-foreground">Pilot Inquiries Management</p>
+            <p className="text-sm text-muted-foreground">Pilot Inquiries & Security Management</p>
           </div>
           <Button onClick={handleSignOut} variant="outline">
             Sign Out
@@ -154,60 +156,73 @@ export default function AdminDashboard() {
       </header>
 
       <main className="container mx-auto max-w-7xl px-6 py-8">
-        <Card>
-          <CardHeader>
-            <CardTitle>Pilot Inquiries</CardTitle>
-            <CardDescription>
-              All submitted pilot requests from potential partners
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            {inquiries.length === 0 ? (
-              <div className="text-center py-12 text-muted-foreground">
-                No inquiries yet
-              </div>
-            ) : (
-              <div className="overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Name</TableHead>
-                      <TableHead>Email</TableHead>
-                      <TableHead>Organization</TableHead>
-                      <TableHead>Role</TableHead>
-                      <TableHead>Project</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Submitted</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {inquiries.map((inquiry) => (
-                      <TableRow key={inquiry.id}>
-                        <TableCell className="font-medium">{inquiry.name}</TableCell>
-                        <TableCell>{inquiry.email}</TableCell>
-                        <TableCell>{inquiry.organization || "-"}</TableCell>
-                        <TableCell>{inquiry.role}</TableCell>
-                        <TableCell className="max-w-xs truncate">
-                          {inquiry.project_description}
-                        </TableCell>
-                        <TableCell>
-                          <Badge variant={inquiry.status === "new" ? "default" : "secondary"}>
-                            {inquiry.status || "new"}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>
-                          {inquiry.created_at 
-                            ? new Date(inquiry.created_at).toLocaleDateString()
-                            : "-"}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-            )}
-          </CardContent>
-        </Card>
+        <Tabs defaultValue="inquiries" className="space-y-6">
+          <TabsList>
+            <TabsTrigger value="inquiries">Pilot Inquiries</TabsTrigger>
+            <TabsTrigger value="security">Security Settings</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="inquiries">
+            <Card>
+              <CardHeader>
+                <CardTitle>Pilot Inquiries</CardTitle>
+                <CardDescription>
+                  All submitted pilot requests from potential partners
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {inquiries.length === 0 ? (
+                  <div className="text-center py-12 text-muted-foreground">
+                    No inquiries yet
+                  </div>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Name</TableHead>
+                          <TableHead>Email</TableHead>
+                          <TableHead>Organization</TableHead>
+                          <TableHead>Role</TableHead>
+                          <TableHead>Project</TableHead>
+                          <TableHead>Status</TableHead>
+                          <TableHead>Submitted</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {inquiries.map((inquiry) => (
+                          <TableRow key={inquiry.id}>
+                            <TableCell className="font-medium">{inquiry.name}</TableCell>
+                            <TableCell>{inquiry.email}</TableCell>
+                            <TableCell>{inquiry.organization || "-"}</TableCell>
+                            <TableCell>{inquiry.role}</TableCell>
+                            <TableCell className="max-w-xs truncate">
+                              {inquiry.project_description}
+                            </TableCell>
+                            <TableCell>
+                              <Badge variant={inquiry.status === "new" ? "default" : "secondary"}>
+                                {inquiry.status || "new"}
+                              </Badge>
+                            </TableCell>
+                            <TableCell>
+                              {inquiry.created_at 
+                                ? new Date(inquiry.created_at).toLocaleDateString()
+                                : "-"}
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="security">
+            <MFASetup />
+          </TabsContent>
+        </Tabs>
       </main>
     </div>
   );
