@@ -27,11 +27,12 @@ This project implements comprehensive admin authentication and authorization sec
 - **Immutable logs**: RLS policies prevent modification of audit logs
 
 ### 4. Multi-Factor Authentication (MFA)
-Enable MFA in Lovable Cloud backend settings:
-1. Navigate to Auth Settings in the backend dashboard
-2. Enable "Multi-Factor Authentication"
-3. Configure allowed MFA methods (TOTP, SMS)
-4. Optionally require MFA for admin role
+MFA is now enabled and available for all admin accounts:
+1. **Admin Setup**: Admins can enable MFA in the Admin Dashboard → Security Settings tab
+2. **TOTP Support**: Uses time-based one-time passwords (compatible with Google Authenticator, Authy, 1Password, etc.)
+3. **Easy Enrollment**: Scan QR code with authenticator app and verify with 6-digit code
+4. **Recommended**: All admin accounts should enable MFA for enhanced security
+5. **Status Visibility**: MFA status is clearly displayed in the Security Settings panel
 
 ### 5. Session Management
 - **Secure sessions**: Using Supabase Auth with JWT tokens
