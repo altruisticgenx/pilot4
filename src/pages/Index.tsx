@@ -9,24 +9,18 @@ import { Link } from "react-router-dom";
 import ProposalsSection from "@/components/sections/ProposalsSection";
 import ContactForm from "@/components/sections/ContactForm";
 import ExperimentBoard from "@/components/sections/ExperimentBoard";
-import { AIChat } from "@/components/AIChat";
-
 const Index = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
-    element?.scrollIntoView({ behavior: "smooth" });
+    element?.scrollIntoView({
+      behavior: "smooth"
+    });
     setMobileMenuOpen(false);
   };
-
-  return (
-    <div className="w-full min-h-screen bg-sand">
+  return <div className="w-full min-h-screen bg-sand">
       {/* Skip to main content link for accessibility */}
-      <a 
-        href="#main-content" 
-        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-background focus:px-4 focus:py-2 focus:rounded-md focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-primary"
-      >
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-background focus:px-4 focus:py-2 focus:rounded-md focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-primary">
         Skip to main content
       </a>
       
@@ -45,27 +39,19 @@ const Index = () => {
             </div>
             <div className="flex items-center gap-4">
               <Link to="/auth" className="hidden md:inline text-sm text-muted-foreground hover:text-foreground">Admin Login</Link>
-              <Button onClick={() => scrollToSection("contact")} aria-label="Start a 4-week pilot inquiry">Start a 4-Week Pilot</Button>
-              <button 
-                className="md:hidden" 
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                aria-label={mobileMenuOpen ? "Close mobile menu" : "Open mobile menu"}
-                aria-expanded={mobileMenuOpen}
-                aria-controls="mobile-menu"
-              >
+              
+              <button className="md:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label={mobileMenuOpen ? "Close mobile menu" : "Open mobile menu"} aria-expanded={mobileMenuOpen} aria-controls="mobile-menu">
                 {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
               </button>
             </div>
           </div>
-          {mobileMenuOpen && (
-            <div id="mobile-menu" className="md:hidden py-4 border-t">
+          {mobileMenuOpen && <div id="mobile-menu" className="md:hidden py-4 border-t">
               <nav className="flex flex-col gap-4" role="navigation" aria-label="Mobile navigation">
                 <button onClick={() => scrollToSection("experiments")} className="text-left text-muted-foreground hover:text-foreground" aria-label="Navigate to experiments section">Experiments</button>
                 <button onClick={() => scrollToSection("process")} className="text-left text-muted-foreground hover:text-foreground" aria-label="Navigate to process section">Process</button>
                 <button onClick={() => scrollToSection("testimonials")} className="text-left text-muted-foreground hover:text-foreground" aria-label="Navigate to case studies section">Case Studies</button>
               </nav>
-            </div>
-          )}
+            </div>}
         </div>
       </header>
       
@@ -85,7 +71,19 @@ const Index = () => {
         <div className="container mx-auto max-w-6xl px-6">
           <div className="text-center mb-12"><h2 className="text-3xl font-semibold mb-4">What Partners Say</h2></div>
           <div className="grid md:grid-cols-3 gap-6">
-            {[{quote: "They shipped our energy dashboard in 3 weeks. Real code, real value.", author: "Facilities Director", org: "Major University"}, {quote: "Ethical AI that actually works. No black boxes, no lock-in.", author: "Program Lead", org: "EdTech Nonprofit"}, {quote: "Fast iteration, transparent process. Exactly what we needed.", author: "CTO", org: "Civic Startup"}].map((t, idx) => <Card key={idx}><CardContent className="pt-6"><p className="text-muted-foreground mb-4">&ldquo;{t.quote}&rdquo;</p><div><div className="font-semibold text-sm">{t.author}</div><div className="text-xs text-muted-foreground">{t.org}</div></div></CardContent></Card>)}
+            {[{
+              quote: "They shipped our energy dashboard in 3 weeks. Real code, real value.",
+              author: "Facilities Director",
+              org: "Major University"
+            }, {
+              quote: "Ethical AI that actually works. No black boxes, no lock-in.",
+              author: "Program Lead",
+              org: "EdTech Nonprofit"
+            }, {
+              quote: "Fast iteration, transparent process. Exactly what we needed.",
+              author: "CTO",
+              org: "Civic Startup"
+            }].map((t, idx) => <Card key={idx}><CardContent className="pt-6"><p className="text-muted-foreground mb-4">&ldquo;{t.quote}&rdquo;</p><div><div className="font-semibold text-sm">{t.author}</div><div className="text-xs text-muted-foreground">{t.org}</div></div></CardContent></Card>)}
           </div>
         </div>
       </section>
@@ -113,9 +111,6 @@ const Index = () => {
         </div>
         <div className="text-center text-xs text-muted-foreground py-4 border-t">LAT 39.9526 • LONG -75.1652 • Local labs in PA / DC / MA / ME</div>
       </footer>
-      <AIChat />
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
