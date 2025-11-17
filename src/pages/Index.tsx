@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import ProposalsSection from "@/components/sections/ProposalsSection";
 import ContactForm from "@/components/sections/ContactForm";
 import ExperimentBoard from "@/components/sections/ExperimentBoard";
+import { AIChat } from "@/components/AIChat";
 
 const Index = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -112,6 +113,7 @@ const Index = () => {
         </div>
         <div className="text-center text-xs text-muted-foreground py-4 border-t">LAT 39.9526 • LONG -75.1652 • Local labs in PA / DC / MA / ME</div>
       </footer>
+      <AIChat />
     </div>
   );
 };
